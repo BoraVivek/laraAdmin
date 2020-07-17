@@ -5,16 +5,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
 
-@include('admin.includes.header')
+@include('admin.partials.header')
 
 {{-- Use @push('css') to include additional css --}}
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-    @include('admin.includes.top-nav')
+    @include('admin.partials.top-nav')
 
-    @include('admin.includes.sidebar-nav')
+    @include('admin.partials.sidebar-nav')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -45,11 +45,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    @include('admin.includes.footer')
+    @include('admin.partials.footer')
 </div>
 <!-- ./wrapper -->
 
-@include('admin.includes.footer-scripts')
+@include('admin.partials.footer-scripts')
 
 {{-- Use @push('scripts') to include additional scripts --}}
 
