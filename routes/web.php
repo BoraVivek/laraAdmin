@@ -26,12 +26,12 @@ Route::get('/admin','Admin\AdminController@index')->name('admin');
 
 Route::get('/admin/users/all', 'Admin\UsersController@allUsers')->name('admin.users.all');
 Route::get('/admin/roles/all', 'Admin\RolesController@allRoles')->name('admin.roles.all');
-Route::get('/admin/blog/posts/all', 'Admin\PostsController@allPosts')->name('admin.posts.all');
-Route::get('/admin/categories/all','Admin\CategoriesController@allCategories')->name('admin.categories.all');
+//Route::get('/admin/blog/posts/all', 'Admin\PostsController@allPosts')->name('admin.posts.all');
+//Route::get('/admin/categories/all','Admin\CategoriesController@allCategories')->name('admin.categories.all');
 
 Route::post('/admin/users/mass', 'Admin\UsersController@mass')->name('admin.users.mass');
 Route::post('/admin/roles/mass', 'Admin\RolesController@mass')->name('admin.roles.mass');
-Route::post('/admin/categories/mass', 'Admin\CategoriesController@mass')->name('admin.categories.mass');
+//Route::post('/admin/categories/mass', 'Admin\CategoriesController@mass')->name('admin.categories.mass');
 
 
 
@@ -41,8 +41,8 @@ Route::name('admin.')->group(function () {
     Route::resource('admin/users', 'Admin\UsersController');
 
     Route::resource('admin/roles', 'Admin\RolesController');
-
-    Route::resource('admin/blog/posts', 'Admin\PostsController');
-
-    Route::resource('admin/categories','Admin\CategoriesController');
+//
+//    Route::resource('admin/blog/posts', 'Admin\PostsController');
+//
+//    Route::resource('admin/categories','Admin\CategoriesController');
 });

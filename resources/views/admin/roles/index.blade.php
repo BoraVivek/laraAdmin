@@ -1,7 +1,7 @@
 @extends('layouts.admin.layout')
 
-@section('title','All Users')
-@section('content-header','All Users')
+@section('title','All Roles')
+@section('content-header','All Roles')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('vendor/datatables/css/dataTables.bootstrap4.min.css') }}">
@@ -19,11 +19,11 @@
 
     <div class="card shadow m-4" id="app">
         <div class="card-header d-flex justify-content-between">
-            <h6 class="font-weight-bold text-primary">All Users</h6>
+            <h6 class="font-weight-bold text-primary">All Roles</h6>
             <div class="card-tools ml-auto">
-                <a href="{{ route('admin.users.create') }}">
+                <a href="{{ route('admin.roles.create') }}">
                     <button class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Add User
+                        <i class="fas fa-user-plus"></i> Add Role
                     </button>
                 </a>
             </div>
@@ -31,44 +31,38 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <form action="{{ route('admin.users.mass') }}" method="POST">
+                <form action="{{ route('admin.roles.mass') }}" method="POST">
                     @csrf
                     <div class="d-flex">
                         <select name="mass_option" id="mass_option" class="form-control" style="width: 150px"
                                 required="required">
                             <option value>Mass Action</option>
-                            <option value="activate">Activate</option>
-                            <option value="deactivate">De-Activate</option>
-{{--                            <option value="ban">Ban Users</option>--}}
-{{--                            <option value="unban">Unban Users</option>--}}
-                            <option value="delete">Delete Users</option>
+                            <option value="delete">Delete</option>
                         </select>
                         <button type="submit" id="massAction" class="mb-2 btn btn-default">Submit</button>
                     </div>
 
 
-                    <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="rolesTable">
                         <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Joined</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Guard</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Joined</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Guard</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Actions</th>
+                            </tr>
                         </tfoot>
                         <tbody>
 
@@ -81,13 +75,12 @@
 @endsection
 
 @push('scripts')
-
     <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/js/dataTables.checkboxes.min.js') }}"></script>
 
     <script>
-        let usersTable = $('#usersTable').DataTable({
+        let rolesTable = $('#rolesTable').DataTable({
             processing:true,
             buttons: [
                 'selectAll',
@@ -95,22 +88,16 @@
             ],
             select: true,
             serverSide:true,
-            ajax: "{{ route('admin.users.all') }}",
+            ajax: "{{ route('admin.roles.all') }}",
             columns:[
                 {data: 'id', name: 'id' },
                 {data:'name',name:'name'},
-                {data:'email',name:'email'},
-                {data:'role',name:'role',searchable:false,orderable:false},
-                {data:'active',name:'active'},
-                {data:'created_at',name:'created_at',searchable: false},
+                {data:'guard_name',name:'guard_name'},
+                {data:'created_at',name:'created_at',searchable:false},
+                {data:'updated_at',name:'updated_at',searchable:false},
                 {data:'action', name:'action', orderable: false, searchable: false}
             ],
             columnDefs : [
-                { targets : [4],
-                    render : function (data, type, row) {
-                        return data === 1 ? '<span class="alert alert-success p-1">Active</span>' : '<span class="alert alert-danger p-1">In-Active</span>'
-                    }
-                },
                 {
                     'targets': 0,
                     'checkboxes': {
@@ -128,15 +115,13 @@
         });
 
 
-
-
         // Handle form submission event
         $("#massAction").click(function(e){
 
             var form = this;
 
 
-            var rows_selected = usersTable.column(0).checkboxes.selected();
+            var rows_selected = rolesTable.column(0).checkboxes.selected();
 
             if((rows_selected).length < 1)
             {
@@ -162,12 +147,12 @@
 
 
         // Delete Function using ajax
-        function deleteUser(id)
+        function deleteRole(id)
         {
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             Swal.fire({
                 title: "Are you sure?",
-                text: "You want to delete this user, you wont' be able to recover this",
+                text: "You want to delete this role, you wont' be able to recover this",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -178,21 +163,21 @@
                     if(willDelete.value)
                     {
                         $.ajax({
-                            url: "{{ url('admin/users').'/' }}"+id,
+                            url: "{{ url('admin/roles').'/' }}"+id,
                             type: "POST",
                             data: {'_method':'DELETE', '_token' : csrf_token},
                             success: function(data){
-                                usersTable.ajax.reload();
+                                rolesTable.ajax.reload();
                                 Swal.fire(
                                     'Deleted!',
-                                    'User has been deleted.',
+                                    'Role has been deleted.',
                                     'success'
                                 );
                             },
                             error: function() {
                                 Swal.fire({
                                     title:"Oops!",
-                                    text: "User Deletion Failed",
+                                    text: "Role Deletion Failed",
                                     icon: "error"
                                 });
                             }
@@ -203,5 +188,4 @@
         }
 
     </script>
-
 @endpush
