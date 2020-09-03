@@ -6111,3 +6111,8 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+li.has-treeview.menu-open.nav-item {
+  background-color: #525e6a;
+  border-radius: 2px;
+}
+

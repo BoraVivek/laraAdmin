@@ -56,8 +56,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li class="nav-item has-treeview {{ request()->routeIs('admin.posts*') ? 'menu-open' : ''}} {{ request()->routeIs('admin.categories*') ? 'menu-open' : ''}}">
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.posts*') ? 'active' : ''}} {{ request()->routeIs('admin.categories*') ? 'active' : ''}}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Blog
@@ -66,13 +66,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.posts.index') }}" class="nav-link {{ request()->routeIs('admin.posts*') ? 'active' : ''}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Posts</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories*') ? 'active' : ''}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Categories</p>
                             </a>
